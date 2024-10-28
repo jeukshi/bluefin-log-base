@@ -1,0 +1,35 @@
+cabal-version:      3.0
+name:               bluefin-log-base
+version:            0.1.0.0
+license:            MIT
+license-file:       LICENSE
+author:             Daniel Orłowski
+maintainer:         Daniel Orłowski
+build-type:         Simple
+extra-doc-files:    CHANGELOG.md
+description:        Bluefin wrapper for log-base library.
+synopsis:           Bluefin wrapper for log-base library.
+homepage:           https://github.com/jeukshi/bluefin-log-base
+bug-reports:        https://github.com/jeukshi/bluefin-log-base/issues
+
+common warning-opts
+    ghc-options: -Wall -Wcompat
+
+library
+  import:
+      warning-opts
+  hs-source-dirs:
+      src
+  exposed-modules:
+    , Bluefin.Log
+  build-depends:
+      aeson >= 2.0.0.0
+    , base >=4.7 && <5
+    , bluefin >= 0.0.9 && < 0.1
+    , log-base >=0.12.0.0
+    , text
+    , time
+  default-language: GHC2021
+  default-extensions:
+      BlockArguments
+    , ImportQualifiedPost

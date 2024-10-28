@@ -1,0 +1,3 @@
+packages:
+    ./bluefin-log-base
+    ./examples
