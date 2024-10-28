@@ -14,14 +14,14 @@ main :: IO ()
 main =
     withStdOutLogger \stdLogger -> do
         runEff \io -> do
-            runLog "main" stdLogger defaultLogLevel io \logger -> do
+            runLog io "main" stdLogger defaultLogLevel \logger -> do
                 info_ logger "My log"
 
 local :: IO ()
 local =
     withStdOutLogger \stdLogger -> do
         runEff \io -> do
-            runLog "main" stdLogger defaultLogLevel io \logger -> do
+            runLog io "main" stdLogger defaultLogLevel \logger -> do
                 changeDomain logger "localDomain" \localLogger -> do
                     info_ localLogger "changeDomain"
 

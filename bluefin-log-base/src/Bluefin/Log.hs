@@ -21,13 +21,13 @@ instance Handle Log where
 
 runLog
     :: (e1 :> es)
-    => Text
+    => IOE e1
+    -> Text
     -> Logger
     -> LogLevel
-    -> IOE e1
     -> (forall e. Log e -> Eff (e :& es) r)
     -> Eff es r
-runLog component logger maxLogLevel io action = do
+runLog io component logger maxLogLevel action = do
     let loggerEnv =
             LoggerEnv
                 { leLogger = logger
