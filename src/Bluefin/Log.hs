@@ -4,7 +4,7 @@ import Bluefin.Compound (Handle (..), useImplIn)
 import Bluefin.Eff
 import Bluefin.IO (IOE, effIO)
 import Data.Aeson (ToJSON (toJSON))
-import Data.Aeson.Types (emptyObject)
+import Data.Aeson.Types (Pair, emptyObject)
 import Data.Text (Text)
 import Data.Time (getCurrentTime)
 import Log (LogLevel (..), Logger, LoggerEnv (..), logMessageIO)
@@ -42,13 +42,37 @@ runLog component logger maxLogLevel io action = do
             , logEnv = loggerEnv
             }
 
-changeMaxLogLevel
+localData
+    :: (e1 :> es)
+    => Log e1
+    -> [Pair]
+    -> (forall e. Log e -> Eff (e :& es) r)
+    -> Eff es r
+localData (UnsafeMkLog io env) data_ action = do
+    let newEnv = env{leData = data_ ++ leData env}
+    useImplIn
+        action
+        (mapHandle (UnsafeMkLog io newEnv))
+
+localDomain
+    :: (e1 :> es)
+    => Log e1
+    -> Text
+    -> (forall e. Log e -> Eff (e :& es) r)
+    -> Eff es r
+localDomain (UnsafeMkLog io env) domain action = do
+    let newEnv = env{leDomain = leDomain env ++ [domain]}
+    useImplIn
+        action
+        (mapHandle (UnsafeMkLog io newEnv))
+
+localMaxLogLevel
     :: (e1 :> es)
     => Log e1
     -> LogLevel
     -> (forall e. Log e -> Eff (e :& es) r)
     -> Eff es r
-changeMaxLogLevel (UnsafeMkLog io env) maxLogLevel action = do
+localMaxLogLevel (UnsafeMkLog io env) maxLogLevel action = do
     let newEnv = env{leMaxLogLevel = maxLogLevel}
     useImplIn
         action
