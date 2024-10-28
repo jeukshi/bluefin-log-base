@@ -1,4 +1,23 @@
-module Bluefin.Log where
+module Bluefin.Log (
+    -- * Handle
+    Log,
+
+    -- * Handlers
+    runLog,
+
+    -- * Effectful operations
+    changeData,
+    changeDomain,
+    changeMaxLogLevel,
+    message,
+    attention,
+    info,
+    trace,
+    attention_,
+    info_,
+    trace_,
+)
+where
 
 import Bluefin.Compound (Handle (..), useImplIn)
 import Bluefin.Eff
