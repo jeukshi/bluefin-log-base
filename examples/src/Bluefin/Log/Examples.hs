@@ -1,5 +1,4 @@
 {-# LANGUAGE OverloadedStrings #-}
-{-# OPTIONS_GHC -Wno-deferred-out-of-scope-variables #-}
 
 module Bluefin.Log.Examples where
 
@@ -18,16 +17,15 @@ main =
                 info_ logger "My log"
 
 local :: IO ()
-local =
-    withStdOutLogger \stdLogger -> do
-        runEff \io -> do
-            runLog io "main" stdLogger defaultLogLevel \logger -> do
-                changeDomain logger "localDomain" \localLogger -> do
-                    info_ localLogger "changeDomain"
+local = withStdOutLogger \stdLogger -> do
+    runEff \io -> do
+        runLog io "main" stdLogger defaultLogLevel \logger -> do
+            changeDomain logger "localDomain" \localLogger -> do
+                info_ localLogger "changeDomain"
 
-                changeMaxLogLevel logger LogAttention \localLogger -> do
-                    info_ localLogger "changeMaxLogLevel"
-                    attention_ localLogger "changeMaxLogLevel"
+            changeMaxLogLevel logger LogAttention \localLogger -> do
+                info_ localLogger "changeMaxLogLevel"
+                attention_ localLogger "changeMaxLogLevel"
 
-                changeData logger ["localKey" .= ("localVal" :: Text)] \localLogger -> do
-                    info_ localLogger "changeData"
+            changeData logger ["localKey" .= ("localVal" :: Text)] \localLogger -> do
+                info_ localLogger "changeData"
