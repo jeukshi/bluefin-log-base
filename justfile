@@ -1,13 +1,17 @@
 _default:
   @just --list
 
-# Build package.
 build:
   cabal build all
 
-# Test package.
 test:
   cabal test all --test-show-details=direct
 
 format:
     fourmolu -i src
+
+gen-haddock:
+    cabal haddock bluefin-log-base --enable-documentation
+
+gen-haddock-hackage:
+    cabal haddock bluefin-log-base --enable-documentation --haddock-for-hackage
