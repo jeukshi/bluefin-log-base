@@ -76,6 +76,7 @@ runLog
     -> Logger
     -> LogLevel
     -> (forall e. Log e -> Eff (e :& es) r)
+    -- ^ Computation with 'Log'.
     -> Eff es r
 runLog io component logger maxLogLevel action = do
     let loggerEnv =
@@ -161,7 +162,7 @@ changeData
     -> [Pair]
     -- ^ Additional data.
     -> (forall e. Log e -> Eff (e :& es) r)
-    -- ^ New 'Log'.
+    -- ^ Computation with new 'Log'.
     -> Eff es r
 changeData (UnsafeMkLog io env) data_ action = do
     let newEnv = env{leData = data_ ++ leData env}
@@ -181,7 +182,7 @@ changeDomain
     -> Text
     -- ^ Additional domain.
     -> (forall e. Log e -> Eff (e :& es) r)
-    -- ^ New 'Log'.
+    -- ^ Computation with new 'Log'.
     -> Eff es r
 changeDomain (UnsafeMkLog io env) domain action = do
     let newEnv = env{leDomain = leDomain env ++ [domain]}
@@ -201,7 +202,7 @@ changeMaxLogLevel
     -> LogLevel
     -- ^ New 'LogLevel'.
     -> (forall e. Log e -> Eff (e :& es) r)
-    -- ^ New 'Log'.
+    -- ^ Computation with new 'Log'.
     -> Eff es r
 changeMaxLogLevel (UnsafeMkLog io env) maxLogLevel action = do
     let newEnv = env{leMaxLogLevel = maxLogLevel}
